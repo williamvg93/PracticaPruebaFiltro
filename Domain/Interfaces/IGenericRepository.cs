@@ -8,7 +8,7 @@ namespace Domain.Interfaces;
 
 public interface IGenericRepository<T> where T : class
 {
-    Task<T> GetByIdAsync();
+    Task<T> GetByIdAsync(object id);
     Task<IEnumerable<T>> GetAllAsync();
     IEnumerable<T> Find(Expression<Func<T, bool>> expression);
     void Add(T entity);
