@@ -8,5 +8,6 @@ namespace Domain.Interfaces;
 
 public interface IPedido : IGenericRepository<Pedido>
 {
-
+    /* Task<Pedido> GetEstadosPedido(); */
+    Task<IEnumerable<Pedido>> GetEstadosPedido();
 }

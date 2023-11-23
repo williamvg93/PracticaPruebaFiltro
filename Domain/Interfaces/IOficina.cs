@@ -8,5 +8,6 @@ namespace Domain.Interfaces;
 
 public interface IOficina : IGenericRepository<Oficina>
 {
-
+    /* Task<Client> GetClientWithMaxCredit(); */
+    Task<IEnumerable<Oficina>> GetOficinasEsp(string pais);
 }

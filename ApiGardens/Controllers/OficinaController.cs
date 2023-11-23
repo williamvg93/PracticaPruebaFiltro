@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ApiGardens.Dtos.Get.Oficina;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;
@@ -37,11 +38,26 @@ public class OficinaController : BaseController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<Oficina>> Get(string id)
     {
-        var variableSingular = await _unitOfWork.Oficinas.GetByIdAsync(id);
-        if (variableSingular == null)
+        var oficina = await _unitOfWork.Oficinas.GetByIdAsync(id);
+        if (oficina == null)
         {
             return NotFound();
         }
-        return _mapper.Map<Oficina>(variableSingular);
+        return _mapper.Map<Oficina>(oficina);
+    }
+
+    /* Get oficinas de españa */
+    [HttpGet("GetOficinasEsp")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<IEnumerable<OficinaDto>>> GetOficinasEsp(string pais = "España")
+    {
+        var oficinas = await _unitOfWork.Oficinas.GetOficinasEsp(pais);
+        if (oficinas == null)
+        {
+            return NotFound();
+        }
+        return _mapper.Map<List<OficinaDto>>(oficinas);
     }
 }
