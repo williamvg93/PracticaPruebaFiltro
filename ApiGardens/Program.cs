@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Persistence.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -16,6 +19,22 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+    try
+    {
+        var context = services.GetRequiredService<ApiGardensContext>();
+        await context.Database.MigrateAsync();
+    }
+    catch (Exception ex)
+    {
+        var _logger = loggerFactory.CreateLogger<Program>();
+        _logger.LogError(ex, "Ocurrio un error durante la migracion !!");
+    }
+}
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
@@ -23,5 +42,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
 
 
