@@ -1,3 +1,5 @@
+using System.Reflection;
+using ApiGardens.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Data;
 
@@ -9,6 +11,17 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+/* Add AddAPlicationServices */
+builder.Services.AddAplicationServices();
+
+/* Add Cors */
+builder.Services.ConfigureCors();
+
+/* Add AutoMApper */
+builder.Services.AddAutoMapper(Assembly.GetEntryAssembly());
+
 
 /* Add connection to database */
 builder.Services.AddDbContext<ApiGardensContext>(options =>
@@ -41,6 +54,9 @@ using (var scope = app.Services.CreateScope())
         _logger.LogError(ex, "Ocurrio un error durante la migracion !!");
     }
 }
+
+/* Use Cors */
+app.UseCors("CorsPolicy");
 
 app.UseHttpsRedirection();
 
